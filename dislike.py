@@ -81,8 +81,10 @@ def post(url, data):
 
 def login():
 
-    username = input('Username')
-    password = getpass('Password')
+    username = input('Username: ')
+    password = getpass('Password: ')
+
+    print('logging in... ', end='', flush=True)
 
     page = post('http://forum.outerspace.com.br/index.php?login/login', {
         "login"         : username, 
@@ -94,8 +96,11 @@ def login():
     })
 
     if page.find('section visitorPanel') < 0:
+        print('failed!')
         print(page)
         raise Exception("Login failed!")
+
+    print('ok.')
 
 ###############################################################################
 #
@@ -127,6 +132,8 @@ def dislike(posts):
 
     login()
 
+    print('going through %d posts...' % len(posts))
+
     for p in posts:
 
         # Posts or Profile posts
@@ -157,7 +164,7 @@ def dislike(posts):
         else:
             raise Exception('Unknown option %s' % p)
 
-        print('-' if dislike_one(p) else '.', end='')
+        print('-' if dislike_one(p) else '.', end='', flush=True)
 
 ###############################################################################
 # Post list compressed using zlib and encoded in base 64
